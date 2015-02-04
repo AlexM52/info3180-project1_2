@@ -24,6 +24,16 @@ def home():
 def about():
     """Render the website's about page."""
     return render_template('about.html')
+  
+@app.route('/profile/')
+def profile():
+  """Render the profile page"""
+  return render_template('profile.html', date=timeinfo())
+
+import time
+def timeinfo():
+  """Return string with date stuff"""
+  return "Today is: " + time.strftime("%A, %d %b, %Y")
 
 
 ###
