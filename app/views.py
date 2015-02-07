@@ -32,8 +32,8 @@ def profile():
 
 import time
 def timeinfo():
-  """Return string with date stuff"""
-  return "Today is: " + time.strftime("%A, %d %b, %Y")
+  """Return string with date formatted as specified"""
+  return "Today is: " + time.strftime("%a, %d %b, %Y")
 
 
 ###
