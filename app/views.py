@@ -35,6 +35,8 @@ def timeinfo():
   """Return string with date formatted as specified"""
   return "Today is: " + time.strftime("%a, %d %b, %Y")
 
+@app.route('/profiles')
+
 
 ###
 # The functions below should be applicable to all Flask apps.
