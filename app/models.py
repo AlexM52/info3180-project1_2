@@ -12,7 +12,7 @@ class User(db.Model):
   highscore = db.Column(db.Integer)
   tdollars = db.Column(db.Integer)#float type?
   
-  def __init__(self, username, email):
+  def __init__(self, username, email, image, fname, lname, age, sex):
     self.username = username
     self.email = email
     self.image = image
@@ -20,8 +20,8 @@ class User(db.Model):
     self.lname = lname
     self.age = age
     self.sex = sex
-    self.highscore = highscore
-    self.tdollars - tdollars
+    self.highscore = 0
+    self.tdollars = 0
 
   def __repr__(self):
     return '<User %r>' % self.username
