@@ -43,7 +43,7 @@ def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
   if request.method == 'POST':
     #return json
-    return jsonify(id=usr.id, uname=usr.username, image=usr.image, age=usr.age, email=usr.email, fname=usr.fname, lname=usr.lname, sex=usr.sex, highscore=usr.highscore, tdollars=usr.tdollars)
+    return jsonify(id=usr.id, uname=usr.username, image=usr.image, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
 #     usr = User.query.filter_by(id=userid).first()
     user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
