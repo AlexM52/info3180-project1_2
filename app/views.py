@@ -10,6 +10,7 @@ from app import app
 from flask import render_template, request, redirect, url_for
 from app import db
 from app.models import User
+from flask import jsonify, session
 
 
 ###
@@ -37,11 +38,16 @@ def timeinfo():
   """Return string with date formatted as specified"""
   return "Today is: " + time.strftime("%a, %d %b, %Y")
 
-@app.route('/profile/<userid>')
+@app.route('/profile/<userid>', methods=['POST', 'GET'])
 def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
-  user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
-  return render_template('userprofile.html', user=user)
+  if request.method == 'POST':
+    #return json
+    return jsonify(id=usr.id, uname=usr.username, image=usr.image, age=usr.age, email=usr.email, fname=usr.fname, lname=usr.lname, sex=usr.sex, highscore=usr.highscore, tdollars=usr.tdollars)
+  else:
+#     usr = User.query.filter_by(id=userid).first()
+    user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
+    return render_template('userprofile.html', user=user)
   
 
 # @app.route('/profiles')
