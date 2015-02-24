@@ -15,6 +15,8 @@ from datetime import *
 from .forms import NewProfileForm
 import json
 from flask import Response
+from werkzeug import secure_filename
+import os
 
 
 ###
@@ -50,12 +52,15 @@ def profile():
     #add user to db
     un = request.form['username']
     em = request.form['email']
-    im = request.form['image']
+    im = request.files['image']
+    im_fn = un + '_' + secure_filename(im.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], im_fn)
+    im.save(file_path)
     fn = request.form['fname']
     ln = request.form['lname']
     ag = int(request.form['age'])
     sx = request.form['sex']
-    newUser = User(un, em, im, fn, ln, ag, sx)
+    newUser = User(un, em, im_fn, fn, ln, ag, sx, timeinfo())
     db.session.add(newUser)
     db.session.commit()
     nu = User.query.filter_by(username=un).first()
@@ -93,7 +98,10 @@ def user_profile(userid):
   else:
 #     usr = User.query.filter_by(id=userid).first()
     user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
-    return render_template('userprofile.html', user=user)
+    return render_template('userprofile.html', user=user, datestr=date_to_str(usr.datejoined))
+  
+def date_to_str(dt):
+  return dt.strftime("%a, %d %b, %Y")
   
 
 @app.route('/profiles', methods=["POST", "GET"])

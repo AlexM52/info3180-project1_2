@@ -8,13 +8,13 @@
 {% block main %}
 <div class="page">
   <div class="head">
-    <img src="{{ url_for('static', filename = 'img/'+user['image']) }}">
+    <img src="{{ url_for('static', filename = 'img/uploads/'+user['image']) }}">
     <div class="profile_name">
       <h1>{{user['fname']}} {{user['lname']}}</h1>
     </div>
   </div>
   <div class="p_datebox content">
-    <p>--date goes here--</p>
+    <p>Profile added on: {{ datestr }}</p>
   </div>
   <div class="p_content content">
     <p>
