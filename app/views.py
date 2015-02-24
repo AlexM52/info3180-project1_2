@@ -14,6 +14,7 @@ from flask import jsonify, session
 from datetime import *
 from .forms import NewProfileForm
 import json
+from flask import Response
 
 
 ###
@@ -101,8 +102,9 @@ def profiles():
   if request.method == "POST":
     lst=[]
     for user in users:
-      lst.append(jsonify(id=user.id, uname=user.username, image=user.image, sex=user.sex, age=user.age, highscore=user.highscore, tdollars=user.tdollars))
-    return jsonify(users=lst)
+      lst.append({'id':user.id, 'uname':user.username, 'image':user.image, 'sex':user.sex, 'age':user.age, 'highscore':user.highscore, 'tdollars':user.tdollars})
+    users = {'users': lst}
+    return Response(json.dumps(users), mimetype='application/json')
   else:
     return render_template('profiles.html', users=users)
 
