@@ -11,6 +11,8 @@ from flask import render_template, request, redirect, url_for
 from app import db
 from app.models import User
 from flask import jsonify, session
+from datetime import *
+from .forms import NewProfileForm
 
 
 ###
@@ -28,15 +30,57 @@ def about():
     """Render the website's about page."""
     return render_template('about.html')
   
-@app.route('/profile/')
+# @app.route('/profile/')
+# def profile():
+#   """Render the profile page"""
+#   return render_template('profile.html', date=timeinfo())
+
+# import time
+# def timeinfo():
+#   """Return string with date formatted as specified"""
+#   return "Today is: " + time.strftime("%a, %d %b, %Y")
+
+@app.route('/profile/', methods=['POST', 'GET'])
 def profile():
   """Render the profile page"""
-  return render_template('profile.html', date=timeinfo())
+  form = NewProfileForm()
+  if form.validate_on_submit():
+    #add user to db
+    un = request.form['username']
+    em = request.form['email']
+    im = request.form['image']
+    fn = request.form['fname']
+    ln = request.form['lname']
+    ag = int(request.form['age'])
+    sx = request.form['sex']
+    newUser = User(un, em, im, fn, ln, ag, sx)
+    db.session.add(newUser)
+    db.session.commit()
+    nu = User.query.filter_by(username=un).first()
+    return redirect('/profile/'+str(nu.id))
+  return render_template('form.html', form=form)
+#   if request.method == 'POST':
+#     #add user to db
+#     un = request.form['username']
+#     em = request.form['email']
+#     im = request.form['image']
+#     fn = request.form['fname']
+#     ln = request.form['lname']
+#     ag = int(request.form['age'])
+#     sx = request.form['sex']
+#     newUser = User(un, em, im, fn, ln, ag, sx)
+#     db.session.add(newUser)
+#     db.session.commit()
+#   else:
+#     #serve form page
+#     form = NewProfileForm()
+#     return render_template('form.html', form=form)
 
 import time
 def timeinfo():
   """Return string with date formatted as specified"""
-  return "Today is: " + time.strftime("%a, %d %b, %Y")
+#   return "Today is: " + time.strftime("%a, %d %b, %Y")#need to alter to match postgres date fmt
+  return datetime.now()
 
 @app.route('/profile/<userid>', methods=['POST', 'GET'])
 def user_profile(userid):
