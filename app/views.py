@@ -85,14 +85,14 @@ def profile():
 
 import time
 def timeinfo():
-  """Return string with date formatted as specified"""
+  """Return current datetime obj"""
 #   return "Today is: " + time.strftime("%a, %d %b, %Y")#need to alter to match postgres date fmt
   return datetime.now()
 
 @app.route('/profile/<userid>', methods=['POST', 'GET'])
 def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
-  if request.method == 'POST':
+  if (request.method == 'POST' or request.headers['Content-Type'] == 'application/json'):
     #return json
     return jsonify(id=usr.id, uname=usr.username, image=usr.image, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
@@ -104,10 +104,12 @@ def date_to_str(dt):
   return dt.strftime("%a, %d %b, %Y")
   
 
-@app.route('/profiles', methods=["POST", "GET"])
+# @app.route('/profiles', methods=["POST", "GET"])
+@app.route('/profiles', methods=["GET"])
 def profiles():
   users = db.session.query(User).all()
-  if request.method == "POST":
+#   if request.method == "POST":
+  if request.headers['Content-Type'] == 'application/json':
     lst=[]
     for user in users:
       lst.append({'id':user.id, 'uname':user.username, 'image':user.image, 'sex':user.sex, 'age':user.age, 'highscore':user.highscore, 'tdollars':user.tdollars})
