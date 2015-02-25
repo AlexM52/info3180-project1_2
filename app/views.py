@@ -92,7 +92,8 @@ def timeinfo():
 @app.route('/profile/<userid>', methods=['POST', 'GET'])
 def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
-  if (request.method == 'POST' or request.headers['Content-Type'] == 'application/json'):
+#   if (request.method == 'POST' or request.headers['Content-Type'] == 'application/json'):
+  if reuest.method == 'POST':
     #return json
     return jsonify(id=usr.id, uname=usr.username, image=usr.image, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
@@ -108,8 +109,8 @@ def date_to_str(dt):
 @app.route('/profiles', methods=["GET"])
 def profiles():
   users = db.session.query(User).all()
-#   if request.method == "POST":
-  if request.headers['Content-Type'] == 'application/json':
+  if request.method == "POST":
+#   if request.headers['Content-Type'] == 'application/json':
     lst=[]
     for user in users:
       lst.append({'id':user.id, 'uname':user.username, 'image':user.image, 'sex':user.sex, 'age':user.age, 'highscore':user.highscore, 'tdollars':user.tdollars})

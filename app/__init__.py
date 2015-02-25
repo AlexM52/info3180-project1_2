@@ -9,4 +9,4 @@ db = SQLAlchemy(app)
 
 from app import views, models
 
-WTF_CSRF_ENABLED = False
+# WTF_CSRF_ENABLED = False
