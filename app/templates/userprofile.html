@@ -8,7 +8,8 @@
 {% block main %}
 <div class="page">
   <div class="head">
-    <img src="{{ url_for('static', filename = 'img/uploads/'+user['image']) }}">
+<!--     <img src="{{ url_for('static', filename = 'img/uploads/'+user['image']) }}"> -->
+    <img src="{{ user['image'] }}">
     <div class="profile_name">
       <h1>{{user['fname']}} {{user['lname']}}</h1>
     </div>

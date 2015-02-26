@@ -55,6 +55,7 @@ def profile():
     im = request.files['image']
     im_fn = un + '_' + secure_filename(im.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], im_fn)
+#     file_path = os.path.join('/profpics', im_fn)
     im.save(file_path)
     fn = request.form['fname']
     ln = request.form['lname']
@@ -89,16 +90,18 @@ def timeinfo():
 #   return "Today is: " + time.strftime("%a, %d %b, %Y")#need to alter to match postgres date fmt
   return datetime.now()
 
-@app.route('/profile/<userid>', methods=['POST', 'GET'])
+@app.route('/profile/<int:userid>', methods=['POST', 'GET'])
 def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
+  imgURL = url_for('static', filename='img/uploads/'+usr.image)
 #   if (request.method == 'POST' or request.headers['Content-Type'] == 'application/json'):
-  if reuest.method == 'POST':
+  if request.method == 'POST':
     #return json
-    return jsonify(id=usr.id, uname=usr.username, image=usr.image, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
+    return jsonify(id=usr.id, uname=usr.username, image=imgURL, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
 #     usr = User.query.filter_by(id=userid).first()
-    user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
+#     imgURL = url_for('static', filename='img/uploads/'+usr.image)
+    user = {'id':usr.id, 'uname':usr.username, 'image':imgURL, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
     return render_template('userprofile.html', user=user, datestr=date_to_str(usr.datejoined))
   
 def date_to_str(dt):
@@ -106,7 +109,7 @@ def date_to_str(dt):
   
 
 # @app.route('/profiles', methods=["POST", "GET"])
-@app.route('/profiles', methods=["GET"])
+@app.route('/profiles/', methods=["GET", "POST"])
 def profiles():
   users = db.session.query(User).all()
   if request.method == "POST":
