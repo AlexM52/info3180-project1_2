@@ -99,6 +99,7 @@ def user_profile(userid):
     return jsonify(id=usr.id, uname=usr.username, image=imgURL, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
 #     usr = User.query.filter_by(id=userid).first()
+#random comment just so I can push and build to heroku
     user = {'id':usr.id, 'uname':usr.username, 'image':imgURL, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
     return render_template('userprofile.html', user=user, datestr=date_to_str(usr.datejoined))
   
