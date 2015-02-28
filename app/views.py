@@ -92,13 +92,14 @@ def timeinfo():
 @app.route('/profile/<userid>', methods=['POST', 'GET'])
 def user_profile(userid):
   usr = User.query.filter_by(id=userid).first()
+  imgURL = url_for('static', filename='img/uploads/'+usr.image)
 #   if (request.method == 'POST' or request.headers['Content-Type'] == 'application/json'):
-  if reuest.method == 'POST':
+  if request.method == 'POST':
     #return json
-    return jsonify(id=usr.id, uname=usr.username, image=usr.image, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
+    return jsonify(id=usr.id, uname=usr.username, image=imgURL, sex=usr.sex, age=usr.age, highscore=usr.highscore, tdollars=usr.tdollars)
   else:
 #     usr = User.query.filter_by(id=userid).first()
-    user = {'id':usr.id, 'uname':usr.username, 'image':usr.image, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
+    user = {'id':usr.id, 'uname':usr.username, 'image':imgURL, 'age':usr.age, 'email':usr.email, 'fname':usr.fname, 'lname':usr.lname, 'sex':usr.sex, 'highscore':usr.highscore, 'tdollars':usr.tdollars}
     return render_template('userprofile.html', user=user, datestr=date_to_str(usr.datejoined))
   
 def date_to_str(dt):
