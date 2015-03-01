@@ -108,7 +108,7 @@ def date_to_str(dt):
   
 
 # @app.route('/profiles', methods=["POST", "GET"])
-@app.route('/profiles', methods=["GET"])
+@app.route('/profiles/', methods=["GET", "POST"])
 def profiles():
   users = db.session.query(User).all()
   if request.method == "POST":
